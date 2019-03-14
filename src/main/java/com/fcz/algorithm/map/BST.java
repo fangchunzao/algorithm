@@ -39,6 +39,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return get(root, key);
     }
 
+    // 二分查找 找到相同的即取出
     private Value get(Node x, Key key) {
         if (x == null) return null;
         int cmp = key.compareTo(x.key);
@@ -51,6 +52,7 @@ public class BST<Key extends Comparable<Key>, Value> {
       root = put(root, key, value);
     }
 
+    // 使用二分 查找到节点位置 然后重新计算N
     private Node put(Node x, Key key, Value value) {
         if (x == null) return new Node(key,value,1);
         int cmp = key.compareTo(x.key);
@@ -81,13 +83,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (x.right == null) return x;
         return max(x.right);
     }
-
+    // 查找与节点Key最接近的节点
     public Key floor(Key key) {
         Node x = floor(root, key);
         if (x == null) return null;
         return x.key;
     }
-
+    // 二分查找 判断在树的左侧还是右侧
     private Node floor(Node x, Key key) {
         if (x == null) return null;
         int cmp = key.compareTo(x.key);
@@ -98,6 +100,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (t != null) return t; // 右侧没有找到
         else return x;
     }
+
     // 找到排名为k的键
     public Key select(int k) {
         return select(root, k).key;
@@ -115,7 +118,9 @@ public class BST<Key extends Comparable<Key>, Value> {
     public int rank(Key key) {
         return rank(key,root);
     }
-
+    // 判断指定键在左子树还是右子树
+    // 如果在左子树 直接计算当前的节点
+    // 如果在右子树 计算 (左子树节点数+右子树节点数)
     private int rank(Key key, Node x) {
         if (x == null) return 0;
         int cmp = key.compareTo(x.key);
@@ -138,6 +143,12 @@ public class BST<Key extends Comparable<Key>, Value> {
     public void delete(Key key) {
         root = delete(root, key);
     }
+    // 删除节点
+    // 1.找到节点位置x
+    // 2.先使用临时变量t=x
+    // 3.x= 右子树的最小节点
+    // 4.x.left = deleteMin(t的右子树);
+    // 5. x.left = t.left 完成节点删除 并且重新排序
 
     private Node delete(Node x, Key key) {
         if (x == null) return  null;
@@ -156,6 +167,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return x;
     }
 
+    // 查找区间内节点
     public Iterable<Key> keys() {
         return keys(min(),max());
     }
